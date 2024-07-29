@@ -48,23 +48,15 @@ class SupConLoss(nn.Module):
         device = feats.device
         dtype = feats.dtype
 
-        pair_label = torch.arange(B, dtype=torch.long, device=device)
+        pair_label = torch.arange(
+            B, dtype=torch.long, device=device) + B
 
         if self.contrast_mode == 'all':
             # (2 * B, 2 * B)
             logits = torch.matmul(feats, feats.T)
             n_queryies = 2
             pair_label = torch.cat(
-                [pair_label + B, pair_label], dim=0)
-            """
-                For a case of B=2, pair_label = [2, 3, 0, 1]
-                positive_mask = [
-                    [0, 0, 1, 0],
-                    [0, 0, 0, 1],
-                    [1, 0, 0, 0],
-                    [0, 1, 0, 0],
-                ]
-            """
+                [pair_label, pair_label - B], dim=0)
         elif self.contrast_mode == 'one':
             # (B, 2 * B)
             logits = torch.matmul(query, feats.T)
