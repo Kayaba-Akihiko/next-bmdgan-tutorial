@@ -1,0 +1,21 @@
+output_dir = 'workspace/eval/384_swintiny_on_decomposition_s1_on_masked_autoencoder'
+
+pretrain_load_dir = 'workspace/train/384_swintiny_on_decomposition_s1_on_masked_autoencoder'
+
+[model_config]
+class = 'core.models.pix2pix.TestEvalImage'
+image_channels = 3
+image_size = [384, 384]
+backbone = 'swinv2_tiny'
+
+[data_module_config]
+test_batch_size = 1
+n_test_loading_workers = 2
+
+[data_module_config.test_dataset_config]
+class = 'core.datasets.oxford_iiit_pet.pet_decomposition.TestDataset'
+data_root = 'datasets/oxford_iiit_pet'
+mode = 'pet'
+image_size = [384, 384]
+return_original_image = true
+preload = false

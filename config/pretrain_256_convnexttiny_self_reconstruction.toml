@@ -1,0 +1,37 @@
+output_dir = 'workspace/pretrain/256_convnexttiny_self_reconstruction'
+n_epochs = 200
+visual_every_n_epochs = 20
+
+[model_config]
+class = 'core.models.pix2pix.Training'
+image_channels = 3
+image_size = [256, 256]
+backbone = 'convnextv2_tiny'
+learning_rate = 2e-4
+lambda_gan = 0
+lambda_recon = 1
+recon_criterion = 'l2'
+
+[data_module_config]
+training_batch_size = 8   # Reduce if OOM
+test_batch_size = 8
+n_training_loading_workers = 8
+n_test_loading_workers = 8
+
+[data_module_config.training_dataset_config]
+class = 'core.datasets.oxford_iiit_pet.pet_self_recon.TrainingDataset'
+data_root = 'datasets/oxford_iiit_pet'
+load_size = [300, 300]
+image_size = [256, 256]
+preload = true
+n_workers = 8
+
+[data_module_config.test_dataset_config]
+class = 'core.datasets.oxford_iiit_pet.pet_self_recon.TestDataset'
+data_root = 'datasets/oxford_iiit_pet'
+image_size = [256, 256]
+preload = true
+n_workers = 8
+
+[data_module_config.visualization_dataset_config]
+pool_size = 8

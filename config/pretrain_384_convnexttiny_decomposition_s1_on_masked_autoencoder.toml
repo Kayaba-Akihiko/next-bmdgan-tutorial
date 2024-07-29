@@ -1,0 +1,41 @@
+output_dir = 'workspace/pretrain/384_convnexttiny_decomposition_s1_on_masked_autoencoder'
+n_epochs = 200
+visual_every_n_epochs = 20
+
+[model_config]
+class = 'core.models.pix2pix.Training'
+image_channels = 3
+image_size = [384, 384]
+backbone = 'convnextv2_tiny'
+pretrain_backbone_load_path = 'workspace/pretrain/384_convnexttiny_masked_autoencoder/ckp_net.pt'
+learning_rate = 2e-4
+lambda_gan = 0
+lambda_recon = 1
+recon_criterion = 'l2'
+
+[data_module_config]
+training_batch_size = 8   # Reduce if OOM
+test_batch_size = 8
+n_training_loading_workers = 8
+n_test_loading_workers = 8
+
+
+[data_module_config.training_dataset_config]
+class = 'core.datasets.oxford_iiit_pet.pet_decomposition.TrainingDataset'
+data_root = 'datasets/oxford_iiit_pet'
+mode = 'pet_and_boarder'
+load_size = [400, 400]
+image_size = [384, 384]
+preload = true
+n_workers = 8
+
+[data_module_config.test_dataset_config]
+class = 'core.datasets.oxford_iiit_pet.pet_decomposition.TestDataset'
+data_root = 'datasets/oxford_iiit_pet'
+mode = 'pet_and_boarder'
+image_size = [384, 384]
+preload = true
+n_workers = 8
+
+[data_module_config.visualization_dataset_config]
+pool_size = 8

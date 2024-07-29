@@ -1,0 +1,41 @@
+#  Copyright (c) 2024. by Yi GU <gu.yi.gu4@naist.ac.jp>,
+#  Imaging-based Computational Biomedicine Laboratory,
+#  Nara Institution of Science and Technology.
+#  All rights reserved.
+#  This file can not be copied and/or distributed
+#  without the express permission of Yi GU.
+
+
+import torch.nn as nn
+from .mlp_head import MLPHead
+from typing import Optional
+
+_ARCH_CLASS_TABLE = dict(
+    mlp_head=MLPHead,
+)
+
+
+class ClassifierHeadFactory:
+    supported_archs = tuple(_ARCH_CLASS_TABLE.keys())
+    default_arch = 'mlp_head'
+
+    @staticmethod
+    def get_model(
+            in_channels: int,
+            out_channels: int,
+            pooling='none',
+            arch: Optional[str] = None,
+            **kwargs,
+    ) -> nn.Module:
+        if arch is None:
+            arch = ClassifierHeadFactory.default_arch
+
+        model_class = _ARCH_CLASS_TABLE[arch]
+        model = model_class(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            pooling=pooling,
+            **kwargs,
+        )
+        return model
+    pass

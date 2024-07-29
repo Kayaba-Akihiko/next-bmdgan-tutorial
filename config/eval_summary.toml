@@ -1,0 +1,17 @@
+output_dir = 'workspace/eval_summary'
+#method_evaluation_root = '/win/scallop\user\koku\projects\bmdgan_tutorial_v2_develop/workspace/eval'
+method_evaluation_root = 'workspace/eval'
+
+[pretraining_explain]
+on_self_reconstruction = 'p1'
+on_masked_autoencoder = 'p2'
+on_shuffle_restoration = 'p3'
+on_contrastive_learning = 'p4'
+on_rotation_prediction = 'p5'
+on_segmentation = 'p6'
+on_single_bbox = 'p7'
+on_decomposition_s1 = 'p8'
+on_supervised_contrastive_learning = 'p9'
+on_classification = 'p10'
+on_segmentation_on_masked_autoencoder = 'p2,6'
+on_decomposition_s1_on_masked_autoencoder = 'p2,8'

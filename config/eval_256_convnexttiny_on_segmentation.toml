@@ -1,0 +1,21 @@
+output_dir = 'workspace/eval/256_convnexttiny_on_segmentation'
+
+pretrain_load_dir = 'workspace/train/256_convnexttiny_on_segmentation'
+
+[model_config]
+class = 'core.models.pix2pix.TestEvalImage'
+image_channels = 3
+image_size = [256, 256]
+backbone = 'convnextv2_tiny'
+
+[data_module_config]
+test_batch_size = 1
+n_test_loading_workers = 2
+
+[data_module_config.test_dataset_config]
+class = 'core.datasets.oxford_iiit_pet.pet_decomposition.TestDataset'
+data_root = 'datasets/oxford_iiit_pet'
+mode = 'pet'
+image_size = [256, 256]
+return_original_image = true
+preload = false

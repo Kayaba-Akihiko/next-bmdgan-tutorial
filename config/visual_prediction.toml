@@ -1,0 +1,21 @@
+
+output_dir = 'workspace/visual'
+data_root = 'datasets/oxford_iiit_pet'
+n_workers = 8
+allow_samples = [
+    'american_pit_bull_terrier_25',
+    'Bombay_36',
+    'British_Shorthair_27',
+]
+
+[[net_configs]]
+name = '256_convnexttiny'
+backbone = 'convnextv2_tiny'
+image_size = [256, 256]
+weights_path = 'workspace\train\256_convnexttiny/ckp_net_g.pt'
+
+[[net_configs]]
+name = '256_convnexttiny_on_classification'
+backbone = 'convnextv2_tiny'
+image_size = [256, 256]
+weights_path = 'workspace\train\256_convnexttiny_on_classification/ckp_net_g.pt'
