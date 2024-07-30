@@ -29,17 +29,12 @@ class BaseConvNeXtV2Builder(ABC, BackboneBuilderProtocol):
             out_indices=(0, 1, 2, 3),
         )
 
-    @property
-    @abstractmethod
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        raise NotImplementedError
-
     def build(self) -> TypeBuildResults:
         cfg = self._build_config()
         cfg = update_dict_(cfg, self._kwargs)
-        model = MODELS.build(cfg)
+        model: ConvNeXt = MODELS.build(cfg)
         # model.init_weights()
-        return dict(model=model, out_channels=self._out_channels)
+        return dict(model=model, out_channels=model.channels)
 
     @staticmethod
     def get_layer_cam_layers(model: nn.Module) -> List[nn.Module]:
@@ -58,10 +53,6 @@ class ConvNextV2AttoBuilder(BaseConvNeXtV2Builder):
         cfg['arch'] = 'atto'
         return cfg
 
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 40, 80, 160, 320
-
 
 class ConvNextV2FemtoBuilder(BaseConvNeXtV2Builder):
 
@@ -69,10 +60,6 @@ class ConvNextV2FemtoBuilder(BaseConvNeXtV2Builder):
         cfg = super()._build_config()
         cfg['arch'] = 'femto'
         return cfg
-
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 48, 96, 192, 384
 
 
 class ConvNextV2PicoBuilder(BaseConvNeXtV2Builder):
@@ -82,10 +69,6 @@ class ConvNextV2PicoBuilder(BaseConvNeXtV2Builder):
         cfg['arch'] = 'pico'
         return cfg
 
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 64, 128, 256, 512
-
 
 class ConvNextV2NanoBuilder(BaseConvNeXtV2Builder):
 
@@ -93,10 +76,6 @@ class ConvNextV2NanoBuilder(BaseConvNeXtV2Builder):
         cfg = super()._build_config()
         cfg['arch'] = 'nano'
         return cfg
-
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 80, 160, 320, 640
 
 
 class ConvNextV2TinyBuilder(BaseConvNeXtV2Builder):
@@ -106,10 +85,6 @@ class ConvNextV2TinyBuilder(BaseConvNeXtV2Builder):
         cfg['arch'] = 'tiny'
         return cfg
 
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 96, 192, 384, 768
-
 
 class ConvNextV2SmallBuilder(BaseConvNeXtV2Builder):
 
@@ -117,10 +92,6 @@ class ConvNextV2SmallBuilder(BaseConvNeXtV2Builder):
         cfg = super()._build_config()
         cfg['arch'] = 'small'
         return cfg
-
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 96, 192, 384, 768
 
 
 class ConvNextV2BaseBuilder(BaseConvNeXtV2Builder):
@@ -130,10 +101,6 @@ class ConvNextV2BaseBuilder(BaseConvNeXtV2Builder):
         cfg['arch'] = 'base'
         return cfg
 
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 128, 256, 512, 1024
-
 
 class ConvNextV2LargeBuilder(BaseConvNeXtV2Builder):
 
@@ -141,10 +108,6 @@ class ConvNextV2LargeBuilder(BaseConvNeXtV2Builder):
         cfg = super()._build_config()
         cfg['arch'] = 'large'
         return cfg
-
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 192, 384, 768, 1536
 
 
 class ConvNextV2XLargeBuilder(BaseConvNeXtV2Builder):
@@ -154,10 +117,6 @@ class ConvNextV2XLargeBuilder(BaseConvNeXtV2Builder):
         cfg['arch'] = 'xlarge'
         return cfg
 
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 256, 512, 1024, 2048
-
 
 class ConvNextV2HugeBuilder(BaseConvNeXtV2Builder):
 
@@ -165,7 +124,3 @@ class ConvNextV2HugeBuilder(BaseConvNeXtV2Builder):
         cfg = super()._build_config()
         cfg['arch'] = 'huge'
         return cfg
-
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 352, 704, 1408, 2816

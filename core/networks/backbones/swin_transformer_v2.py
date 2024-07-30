@@ -31,17 +31,15 @@ class BaseSwinV2Builder(ABC, BackboneBuilderProtocol):
             res['window_size'] = 4
         return res
 
-    @property
-    @abstractmethod
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        raise NotImplementedError
-
     def build(self) -> TypeBuildResults:
         cfg = self._build_config()
         cfg = update_dict_(cfg, self._kwargs)
-        model = MODELS.build(cfg)
-        # model.init_weights()
-        return dict(model=model, out_channels=self._out_channels)
+        model:SwinTransformerV2 = MODELS.build(cfg)
+
+        emb_dims = model.embed_dims
+        out_channels = [emb_dims * 2 ** i for i in range(4)]
+        return dict(model=model, out_channels=out_channels)
+
 
 class SwinV2TinyBuilder(BaseSwinV2Builder):
 
@@ -49,10 +47,6 @@ class SwinV2TinyBuilder(BaseSwinV2Builder):
         cfg = super()._build_config()
         cfg.update(dict(arch='tiny'))
         return cfg
-
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 96, 192, 384, 768
 
 
 class SwinV2SmallBuilder(BaseSwinV2Builder):
@@ -62,10 +56,6 @@ class SwinV2SmallBuilder(BaseSwinV2Builder):
         cfg.update(dict(arch='small'))
         return cfg
 
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 96, 192, 384, 768
-
 
 class SwinV2BaseBuilder(BaseSwinV2Builder):
 
@@ -74,10 +64,6 @@ class SwinV2BaseBuilder(BaseSwinV2Builder):
         cfg.update(dict(arch='base'))
         return cfg
 
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 128, 256, 512, 1024
-
 
 class SwinV2LargeBuilder(BaseSwinV2Builder):
 
@@ -85,7 +71,3 @@ class SwinV2LargeBuilder(BaseSwinV2Builder):
         cfg = super()._build_config()
         cfg.update(dict(arch='large'))
         return cfg
-
-    @property
-    def _out_channels(self) -> Tuple[int, int, int, int]:
-        return 192, 384, 768, 1536
