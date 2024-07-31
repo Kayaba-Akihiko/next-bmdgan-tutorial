@@ -5,6 +5,8 @@ Synthesis through Pretraining and Resolution Scaling for Bone Mineral
 Density Estimation from a Plain X-ray Image (Simulation and Synthesis in 
 Medical Imaging, 2024)
 
+[[arXiv](https://arxiv.org/abs/2407.20495)]
+
 Method overview
 ![Alt text](./materials/method_overview.jpg "method_overview")
 
@@ -100,6 +102,9 @@ The code was tested under Ubuntu 22.04 using GPU of a RTX3090 or
 RTX A6000. \
 Prebuilt docker environment can be downloaded from 
 ```akihikokayaba/next-bmdgan-tutorial```
+```bash
+docker pull akihikokayaba/next-bmdgan-tutorial
+```
 
 The main libraries include python=3.12, torch-2.4+cu12.1, openmmengin, 
 openmmpretrain, openmmseg. \
